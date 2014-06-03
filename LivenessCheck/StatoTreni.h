@@ -5,30 +5,33 @@
 using namespace System;
 using namespace System::Collections::Generic;
 
-ref class StatoTreni
+namespace LivenessCheck
 {
-public:
-	property List<MissioneLiveness^>^ Missioni;
-	StatoTreni(void)
+	public ref class StatoTreni
+	{
+	public:
+		property List<MissioneLiveness^>^ Missioni;
+		StatoTreni(void)
 
-        {
-            Missioni = gcnew List<MissioneLiveness^>();
-        }
-        
+		{
+			Missioni = gcnew List<MissioneLiveness^>();
+		}
 
-        StatoTreni^ Clone();
 
-        virtual bool Equals(Object^ obj) override;
+		StatoTreni^ Clone();
 
-        virtual String^ ToString() override;
+		virtual bool Equals(Object^ obj) override;
 
-        virtual int GetHashCode() override
-        {
-            return GetHashCode(Missioni);
-        }
+		virtual String^ ToString() override;
 
-        void Muovi(int trn, int cdb);
+		virtual int GetHashCode() override
+		{
+			return GetHashCode(Missioni);
+		}
 
-        static int GetHashCode(List<MissioneLiveness^>^ values);
+		void Muovi(int trn, int cdb);
 
-};
+		static int GetHashCode(List<MissioneLiveness^>^ values);
+
+	};
+}

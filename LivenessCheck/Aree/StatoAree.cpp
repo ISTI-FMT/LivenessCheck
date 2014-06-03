@@ -2,55 +2,57 @@
 #include "StatoAree.h"
 #include "..\MissioneLiveness.h"
 
-
-bool StatoAree::EntrataPermessa(MissioneLiveness^ missione, int idx, int cdb)
+namespace LivenessCheck
 {
-	bool entrataValida = true;
-
-	array<int>^ azioni = missione->AzioniCdb[idx];
-
-	for (int i = 0; i < Aree->Count; i++)
+	bool StatoAree::EntrataPermessa(MissioneLiveness^ missione, int idx, int cdb)
 	{
-		int azione = azioni[i];
+		bool entrataValida = true;
 
-		if (azione != 0)
+		array<int>^ azioni = missione->AzioniCdb[idx];
+
+		for (int i = 0; i < Aree->Count; i++)
 		{
-			AreaCritica^ area = Aree[i];
-			if (!area->entrataPermessa(missione->Trn, cdb, azione))
+			int azione = azioni[i];
+
+			if (azione != 0)
 			{
-				entrataValida = false;
-				break;
+				AreaCritica^ area = Aree[i];
+				if (!area->entrataPermessa(missione->Trn, cdb, azione))
+				{
+					entrataValida = false;
+					break;
+				}
 			}
 		}
+
+		return entrataValida;
 	}
 
-	return entrataValida;
-}
-
-bool StatoAree::Entrata(MissioneLiveness^ missione, int idx, int cdb)
-{
-	bool entrataValida = true;
-	array<int>^ azioni = missione->AzioniCdb[idx];
-
-	for (int i = 0; i < Aree->Count; i++)
+	bool StatoAree::Entrata(MissioneLiveness^ missione, int idx, int cdb)
 	{
-		int azione = azioni[i];
-		if (azione != 0)
+		bool entrataValida = true;
+		array<int>^ azioni = missione->AzioniCdb[idx];
+
+		for (int i = 0; i < Aree->Count; i++)
 		{
-			AreaCritica^ area = Aree[i];
-			area->entrata(missione->Trn, cdb, azione);
+			int azione = azioni[i];
+			if (azione != 0)
+			{
+				AreaCritica^ area = Aree[i];
+				area->entrata(missione->Trn, cdb, azione);
+			}
 		}
+		return entrataValida;
 	}
-	return entrataValida;
-}
 
-StatoAree^ StatoAree::Clone()
-{
-	StatoAree^ areeClone = gcnew StatoAree();
-	for each (AreaCritica^ area in Aree)
+	StatoAree^ StatoAree::Clone()
 	{
-		AreaCritica^ areaClone = (AreaCritica^)area->Clone();
-		areeClone->Aree->Add(areaClone);
+		StatoAree^ areeClone = gcnew StatoAree();
+		for each (AreaCritica^ area in Aree)
+		{
+			AreaCritica^ areaClone = (AreaCritica^)area->Clone();
+			areeClone->Aree->Add(areaClone);
+		}
+		return areeClone;
 	}
-	return areeClone;
 }

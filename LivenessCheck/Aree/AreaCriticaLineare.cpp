@@ -2,61 +2,63 @@
 #include "AreaCriticaLineare.h"
 
 
-
-
-bool AreaCriticaLineare::entrataPermessa(int idTreno, int cdb, int tipoEntrata)
+namespace LivenessCheck
 {
-	bool res = true;
-	if (tipoEntrata > 0)
+
+	bool AreaCriticaLineare::entrataPermessa(int idTreno, int cdb, int tipoEntrata)
 	{
-		if (tipoEntrata == 3) //Entrata da sinistra (se il cdb è il primo della lista e non ero già entrato da destra)
+		bool res = true;
+		if (tipoEntrata > 0)
 		{
-			if (treniDestra > 0)
+			if (tipoEntrata == 3) //Entrata da sinistra (se il cdb è il primo della lista e non ero già entrato da destra)
 			{
-				res = false;
+				if (treniDestra > 0)
+				{
+					res = false;
+				}
+			}
+			else if (tipoEntrata == 2) //Entrata da sinistra (se il cdb è l'ultimo della lista e non ero già entrato da destra)
+			{
+				if (treniSinistra > 0)
+				{
+					res = false;
+				}
 			}
 		}
-		else if (tipoEntrata == 2) //Entrata da sinistra (se il cdb è l'ultimo della lista e non ero già entrato da destra)
+		return res;
+	}
+
+	void AreaCriticaLineare::entrata(int idTreno, int cdb, int tipoEntrata)
+	{
+		if (tipoEntrata > 0)
 		{
-			if (treniSinistra > 0)
+			if (tipoEntrata == 3) //entrata da sinistra
 			{
-				res = false;
+				treniSinistra++;
+			}
+			else if (tipoEntrata == 2) //entrata da destra
+			{
+				treniDestra++;
+			}
+		}
+		else //sto entrando in un cdb che non è di questa area. Rimuovo il treno
+		{
+			if (tipoEntrata == -3)
+			{
+				treniSinistra--;
+			}
+			else if (tipoEntrata == -2)
+			{
+				treniDestra--;
 			}
 		}
 	}
-	return res;
-}
 
-void AreaCriticaLineare::entrata(int idTreno, int cdb, int tipoEntrata)
-{
-	if (tipoEntrata > 0)
+	Object^ AreaCriticaLineare::Clone()
 	{
-		if (tipoEntrata == 3) //entrata da sinistra
-		{
-			treniSinistra++;
-		}
-		else if (tipoEntrata == 2) //entrata da destra
-		{
-			treniDestra++;
-		}
+		AreaCriticaLineare^ areaClone = gcnew AreaCriticaLineare();
+		areaClone->treniSinistra = treniSinistra;
+		areaClone->treniDestra = treniDestra;
+		return areaClone;
 	}
-	else //sto entrando in un cdb che non è di questa area. Rimuovo il treno
-	{
-		if (tipoEntrata == -3)
-		{
-			treniSinistra--;
-		}
-		else if (tipoEntrata == -2)
-		{
-			treniDestra--;
-		}
-	}
-}
-
-Object^ AreaCriticaLineare::Clone()
-{
-	AreaCriticaLineare^ areaClone = gcnew AreaCriticaLineare();
-	areaClone->treniSinistra = treniSinistra;
-	areaClone->treniDestra = treniDestra;
-	return areaClone;
 }

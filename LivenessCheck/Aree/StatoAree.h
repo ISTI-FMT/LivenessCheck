@@ -8,20 +8,23 @@ using namespace System;
 using namespace System::Collections;
 using namespace System::Collections::Generic;
 
-ref class StatoAree
+namespace LivenessCheck
 {
-public:
-	property List<AreaCritica^>^ Aree;
-
-	StatoAree(void)
+	private ref class StatoAree
 	{
-		Aree = gcnew List<AreaCritica^>();
-	}
+	public:
+		property List<AreaCritica^>^ Aree;
 
-	bool EntrataPermessa(MissioneLiveness^ missione, int idx, int cdb);
+		StatoAree(void)
+		{
+			Aree = gcnew List<AreaCritica^>();
+		}
 
-	bool Entrata(MissioneLiveness^ missione, int idx, int cdb);
+		bool EntrataPermessa(MissioneLiveness^ missione, int idx, int cdb);
 
-	StatoAree^ Clone();
-};
+		bool Entrata(MissioneLiveness^ missione, int idx, int cdb);
 
+		StatoAree^ Clone();
+	};
+
+}

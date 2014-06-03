@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "Movimento.h"
 
-
-Movimento::Movimento(int trn, int cdb)
+namespace LivenessCheck
 {
-	Trn = trn;
-	Cdb = cdb;
+	Movimento::Movimento(int trn, int cdb)
+	{
+		Trn = trn;
+		Cdb = cdb;
+	}
 }
